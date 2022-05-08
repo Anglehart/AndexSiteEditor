@@ -1,0 +1,14 @@
+{
+  "name": "AndexSiteEditor",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.16.4",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "scripts": {
+    "start": "nodemon app.js"
+  }
+}
