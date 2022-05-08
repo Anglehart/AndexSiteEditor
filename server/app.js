@@ -1,69 +1,39 @@
-const http = require("http");
-const port = process.env.PORT || 4000;
+const express = require("express");
+const app = express();
+const mysql = require("mysql2");
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
-const { stat, createReadStream } = require("fs");
-const { promisify } = require("util");
-const { pipeline } = require("stream");
-const fileInfo = promisify(stat);
+app.use(cors({origin: '*'}));
+app.use(bodyParser.json());
 
-http
-    .createServer(async (req, res) => {
+app.post("/get-products-list", function(request, response){
+    const connection = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        database: "andex_node",
+        password: "admin",
+        port: 3306
+    });
 
-        /** Calculate Size of file */
-        const sampleVideo = `.${req.url}`;
-        const { size } = await fileInfo(sampleVideo);
-        const range = req.headers.range;
-
-        /** Check for Range header */
-        if (range) {
-            /** Extracting Start and End value from Range Header */
-            let [start, end] = range.replace(/bytes=/, "").split("-");
-            start = parseInt(start, 10);
-            end = end ? parseInt(end, 10) : size - 1;
-
-            if (!isNaN(start) && isNaN(end)) {
-                start = start;
-                end = size - 1;
-            }
-            if (isNaN(start) && !isNaN(end)) {
-                start = size - end;
-                end = size - 1;
-            }
-
-            // Handle unavailable range request
-            if (start >= size || end >= size) {
-                // Return the 416 Range Not Satisfiable.
-                res.writeHead(416, {
-                    "Content-Range": `bytes */${size}`
-                });
-                return res.end();
-            }
-
-            /** Sending Partial Content With HTTP Code 206 */
-            res.writeHead(206, {
-                "Content-Range": `bytes ${start}-${end}/${size}`,
-                "Accept-Ranges": "bytes",
-                "Content-Length": end - start + 1,
-                "Content-Type": "video/mp4"
-            });
-
-            let readable = createReadStream(sampleVideo, { start: start, end: end });
-            pipeline(readable, res, err => {
-                console.log(err);
-            });
-
-        } else {
-
-            res.writeHead(200, {
-                "Content-Length": size,
-                "Content-Type": "video/mp4"
-            });
-
-            let readable = createReadStream(sampleVideo);
-            pipeline(readable, res, err => {
-                console.log(err);
-            });
-
+    const params = [request.body.offset, request.body.limit];
+    const sql = "SELECT `product_id`, `name_ru-RU`, `product_price`, `image` FROM `nenrc_jshopping_products` LIMIT ?, ?";
+    connection.query(sql, params,
+        function(err, results, fields) {
+            const list = [];
+            results.forEach(el => {
+                list.push({
+                    id: el['product_id'],
+                    name: el['name_ru-RU'],
+                    price: el['product_price'],
+                    image: el['image'],
+                })
+            })
+            response.send(JSON.stringify(list));
         }
-    })
-    .listen(port, () => console.log("Running on 4000 port"));
+    );
+    connection.end();
+});
+
+app.listen(3000);
+
