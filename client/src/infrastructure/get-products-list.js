@@ -1,5 +1,4 @@
 export default function getProductsList(offset, limit) {
-    console.log(offset, limit)
     const params = {
         offset: offset,
         limit: limit,

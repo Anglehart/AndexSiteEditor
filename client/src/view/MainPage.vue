@@ -2,8 +2,10 @@
   <div id="app">
     <h1>Редактор магазина AndexGeo</h1>
     <el-row>
+      <p>Скрытие изображений реализовано через Socket.io</p>
       <el-switch
-          v-model="isImagesShow"
+          @change="toggleImages"
+          :value="getImagesStatus"
           active-text="Показать фото"
           inactive-text="Скрыть фото">
       </el-switch>
@@ -15,7 +17,7 @@
           label="Фото"
           width="90">
         <template slot-scope="scope">
-          <img v-if="isImagesShow" :src="'https://andexgeo.ru/components/com_jshopping/files/img_products/'+scope.row.image" width="90">
+          <img v-if="getImagesStatus" :src="'https://andexgeo.ru/components/com_jshopping/files/img_products/'+scope.row.image" width="90">
         </template>
       </el-table-column>
       <el-table-column

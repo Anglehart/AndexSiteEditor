@@ -1,8 +1,14 @@
-const express = require("express");
-const app = express();
+const app = require('express')();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http, {
+    cors: {
+        origins: ['*'],
+    }
+});
 const mysql = require("mysql2");
 const cors = require('cors');
 const bodyParser = require('body-parser');
+
 
 app.use(cors({origin: '*'}));
 app.use(bodyParser.json());
@@ -35,5 +41,14 @@ app.post("/get-products-list", function(request, response){
     connection.end();
 });
 
-app.listen(3000);
+io.on('connection', (socket) => {
+    socket.on('toggle images request', (msg) => {
+        io.emit('toggle images response', msg);
+    });
+});
+
+http.listen(3000, () => {
+    console.log('listening on *:3000');
+});
+
 

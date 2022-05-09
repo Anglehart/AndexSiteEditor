@@ -1,4 +1,6 @@
 import getProductsList from '@/infrastructure/get-products-list.js';
+import SocketioService from '@/services/socketio.service.js';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'MainPage',
@@ -10,8 +12,12 @@ export default {
             productsList: [],
             offset: 0,
             limit: 10,
-            isImagesShow: false,
         }
+    },
+    computed: {
+        ...mapGetters([
+            'getImagesStatus',
+        ])
     },
     methods: {
         onShowMore(){
@@ -19,11 +25,23 @@ export default {
             getProductsList(this.offset, this.limit).then(res => {
                 this.productsList = res;
             })
+        },
+        toggleImages() {
+            SocketioService.toggleImages(!this.getImagesStatus);
         }
+    },
+    created() {
+        SocketioService.setupSocketConnection();
+    },
+    beforeUnmount() {
+        SocketioService.disconnect();
     },
     mounted() {
         getProductsList(this.offset, this.limit).then(res => {
             this.productsList = res;
         })
+    },
+    watch: {
+
     }
 }
