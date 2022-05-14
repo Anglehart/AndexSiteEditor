@@ -10,6 +10,23 @@
           inactive-text="Скрыть фото">
       </el-switch>
     </el-row>
+    <el-row type="flex" justify="center">
+      <el-col :span="10">
+        <el-input type="textarea" v-model="urls" rows="10"></el-input>
+      </el-col>
+    </el-row>
+     <el-row type="flex" justify="center">
+      <el-col>
+        <el-button type="primary" rows="10" @click="handleGetParser">
+          Парсинг
+        </el-button>
+      </el-col>
+    </el-row>
+    <el-row>
+      <ul v-for="(item, idx) in parserResult" :key="idx">
+        <li>{{item}}</li>
+      </ul>
+    </el-row>
     <el-table
         :data="productsList"
         style="width: 100%">

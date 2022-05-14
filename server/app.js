@@ -8,6 +8,8 @@ const io = require('socket.io')(http, {
 const mysql = require("mysql2");
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const rp = require('request-promise');
+const cheerio = require('cheerio');
 
 
 app.use(cors({origin: '*'}));
@@ -40,6 +42,18 @@ app.post("/get-products-list", function(request, response){
     );
     connection.end();
 });
+
+app.post("/parse-page", function (req, res) {
+    const url = req.body.url;
+    rp(url)
+        .then(function(html){
+            const $ = cheerio.load(html);
+            res.send(JSON.stringify($(".product-card__price-current-value").html()));
+        })
+        .catch(function(err){
+            console.log(err)
+        });
+})
 
 io.on('connection', (socket) => {
     socket.on('toggle images request', (msg) => {

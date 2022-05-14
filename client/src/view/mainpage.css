@@ -20,3 +20,6 @@ li {
 a {
     color: #42b983;
 }
+.el-row {
+    margin: 10px 0;
+}
