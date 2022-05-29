@@ -7,7 +7,6 @@ export default function getParser(url) {
         body: JSON.stringify({url})
     })
     .then((response) => {
-        console.log(response)
         return response.json();
     })
 }

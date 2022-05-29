@@ -1,4 +1,4 @@
-# client
+# sockets
 
 ## Project setup
 ```

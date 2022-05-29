@@ -29,8 +29,11 @@
     </el-row>
     <el-table
         :data="productsList"
-        style="width: 100%">
+        style="width: 100%"
+        empty-text='Нажмите кнопку "Показать"'
+    >
       <el-table-column
+          v-if="getImagesStatus"
           label="Фото"
           width="90">
         <template slot-scope="scope">

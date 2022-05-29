@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isImagesShow: false,
+    isImagesShow: true,
   },
   getters: {
     getImagesStatus(state) {

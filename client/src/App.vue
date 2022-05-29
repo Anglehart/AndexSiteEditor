@@ -1,14 +1,15 @@
 <template>
-  <MainPage msg="Welcome to Your Vue.js App"/>
+  <MainPage msg="Welcome to Your Vue.js + TypeScript App"/>
 </template>
 
-<script>
-import MainPage from './view/MainPage.vue'
+<script lang="ts">
+import { defineComponent } from 'vue';
+import MainPage from '@/view/MainPage/MainPage.vue';
 
-export default {
+export default defineComponent({
   name: 'App',
   components: {
-    MainPage
+    MainPage,
   }
-}
+});
 </script>

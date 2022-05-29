@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/AndexSiteEditor.iml" filepath="$PROJECT_DIR$/.idea/AndexSiteEditor.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../rfq-vue/.idea/rfq-vue.iml" filepath="$PROJECT_DIR$/../rfq-vue/.idea/rfq-vue.iml" />
     </modules>
   </component>
 </project>
