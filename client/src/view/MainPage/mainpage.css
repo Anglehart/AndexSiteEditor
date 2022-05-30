@@ -48,10 +48,12 @@ a {
 .hidemain {
     z-index: 0;
     overflow: hidden;
-    left: -100vw;
 }
 .hidecard {
     z-index: 0;
     overflow: auto;
     right: -100vw;
+}
+.cardpage .el-card {
+    min-height: calc(100% - 22px);
 }
